@@ -8,6 +8,7 @@ const methodOverride = require('method-override')
 const {MongoStore} = require("connect-mongo");
 const connectToDB = require('./db.js')
 const gamesRoutes = require("./routes/games.routes.js")
+const reviewsRoutes = require("./routes/reviews.routes.js")
 
 
 // middleware imports
@@ -56,6 +57,8 @@ app.use(passUserToView)
 app.use('/auth',authController)
 app.use('/',indexController)
 app.use("/games" , gamesRoutes)
+app.use("/games/:gameId/reviews" , reviewsRoutes)
+
 
 // connect to database and listen on Port 3000
 async function startServer() {
