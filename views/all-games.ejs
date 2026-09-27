@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Games</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('partials/navbar') %>
+
+    <h1>All Games</h1>
+
+    <ul>
+        <% games.forEach(game => { %>
+            <li>
+                <a href="/games/<%= game._id %>"><%= game.title %></a>
+                <% if (game.coverImage) { %>
+                    <br>
+                    <img src="<%= game.coverImage %>" alt="<%= game.title %>" width="200">
+                <% } %>
+            </li>
+            <br>
+        <% }) %>
+    </ul>
+</body>
+</html>

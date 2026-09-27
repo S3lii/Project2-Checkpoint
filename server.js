@@ -7,6 +7,8 @@ const session = require('express-session');
 const methodOverride = require('method-override')
 const {MongoStore} = require("connect-mongo");
 const connectToDB = require('./db.js')
+const gamesRoutes = require("./routes/games.routes.js")
+
 
 // middleware imports
 const isSignedIn = require("./middleware/is-signed-in.js");
@@ -53,10 +55,7 @@ app.use(passUserToView)
 // Routes go here
 app.use('/auth',authController)
 app.use('/',indexController)
-
-
-
-
+app.use("/games" , gamesRoutes)
 
 // connect to database and listen on Port 3000
 async function startServer() {
