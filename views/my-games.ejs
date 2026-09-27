@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Games - Journal</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('partials/navbar') %>
+
+    <h1>My Gaming Journal</h1>
+    <p>Here are the games you have rated and reviewed:</p>
+
+    <% if (userReviews && userReviews.length > 0) { %>
+        <ul>
+            <% userReviews.forEach(review => { %>
+                <% if (review.game) { %>
+                    <li>
+                        <h3><%= review.game.title %></h3>
+                        <% if (review.game.coverImage) { %>
+                            <img src="<%= review.game.coverImage %>" alt="<%= review.game.title %>" width="150">
+                            <br>
+                        <% } %>
+                        <p><strong>Rating:</strong> <%= review.rating %> / 5 ⭐</p>
+                        <p><strong>Difficulty:</strong> <%= review.difficulty %></p>
+                        <p><strong>Played:</strong> <%= review.played ? 'Yes' : 'No' %></p>
+                        <p><strong>Completed:</strong> <%= review.completed ? 'Yes' : 'No' %></p>
+                        <% if (review.comment) { %>
+                            <p><strong>My Review:</strong> "<%= review.comment %>"</p>
+                        <% } %>
+
+                        <a href="/games/<%= review.game._id %>">View Game Page</a>
+                    </li>
+                    <hr>
+                <% } %>
+            <% }) %>
+        </ul>
+    <% } else { %>
+        <p>You haven't reviewed any games yet. <a href="/games">Browse games</a> to rate one!</p>
+    <% } %>
+</body>
+</html>
