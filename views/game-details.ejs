@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= game.title %> - Details</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('partials/navbar') %>
+
+    <h1>Game Details</h1>
+    <h2><%= game.title %></h2>
+
+    <% if (game.coverImage) { %>
+        <img src="<%= game.coverImage %>" alt="<%= game.title %>" width="300">
+        <br><br>
+    <% } %>
+
+    <p><strong>Description:</strong> <%= game.description || 'No description provided.' %></p>
+
+    <br>
+    <a href="/games">Back to All Games</a>
+</body>
+</html>

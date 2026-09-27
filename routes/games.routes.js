@@ -7,4 +7,10 @@ router.get("/" , async (req , res) => {
   res.render("all-games.ejs" , { games: games })
 })
 
+
+router.get("/:gameId" , async (req , res) => {
+    const foundGame = await Game.findById(req.params.gameId)
+    res.render("game-details.ejs" , { game: foundGame })
+})
+
 module.exports = router
