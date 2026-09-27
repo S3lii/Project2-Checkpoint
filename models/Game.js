@@ -1,46 +1,42 @@
 const mongoose = require("mongoose")
 
-const reviewSchema = new mongoose.Schema({
-  game: {
-    type: mongoose.Schema.Types.ObjectId , 
-    ref: "Game" , 
-    required: true
-  } , 
-  user: {
-    type: mongoose.Schema.Types.ObjectId , 
-    ref: "User" , 
-    required: true
-  } , 
-  username: {
-    type: String , 
-    required: true
-  } , 
-  played: {
-    type: Boolean , 
-    default: false
-  } , 
-  completed: {
-    type: Boolean , 
-    default: false
-  } , 
-  rating: {
+const gameSchema = new mongoose.Schema({
+  rawgId: {
     type: Number , 
+    index: true
+  } , 
+  title: {
+    type: String , 
     required: true , 
-    min: 1 , 
-    max: 5
+    trim: true
   } , 
-  difficulty: {
+  genre: {
     type: String , 
-    enum: ["Easy" , "Medium" , "Hard" , "Nightmare"] , 
-    default: "Medium"
+    trim: true
   } , 
-  comment: {
+  platform: {
     type: String , 
-    trim: true , 
-    maxLength: 500
-  }
+    trim: true
+  } , 
+  releaseYear: {
+    type: Number
+  } , 
+  coverImage: {
+    type: String , 
+    default: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80"
+  } , 
+  description: {
+    type: String , 
+    trim: true
+  } , 
+  reviews: [
+    {
+      type: mongoose.Schema.Types.ObjectId , 
+      ref: "Review"
+    }
+  ]
 } , { timestamps: true })
 
-const Review = mongoose.model("Review" , reviewSchema)
+const Game = mongoose.model("Game" , gameSchema)
 
-module.exports = Review
+module.exports = Game
