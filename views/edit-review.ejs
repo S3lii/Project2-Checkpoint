@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Review - <%= game.title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('partials/navbar') %>
+
+    <h1>Edit Your Review</h1>
+    <h2><%= game.title %></h2>
+
+    <% if (game.coverImage) { %>
+        <img src="<%= game.coverImage %>" alt="<%= game.title %>" width="200">
+        <br><br>
+    <% } %>
+
+    <form action="/games/<%= game._id %>/reviews/<%= review._id %>?_method=PUT" method="POST">
+        <label for="rating">Score Rating (1-5):</label>
+        <select name="rating" id="rating" required>
+            <option value="5" <%= review.rating === 5 ? 'selected' : '' %>>⭐⭐⭐⭐⭐ (5 - Masterpiece)</option>
+            <option value="4" <%= review.rating === 4 ? 'selected' : '' %>>⭐⭐⭐⭐ (4 - Great)</option>
+            <option value="3" <%= review.rating === 3 ? 'selected' : '' %>>⭐⭐⭐ (3 - Decent)</option>
+            <option value="2" <%= review.rating === 2 ? 'selected' : '' %>>⭐⭐ (2 - Subpar)</option>
+            <option value="1" <%= review.rating === 1 ? 'selected' : '' %>>⭐ (1 - Terrible)</option>
+        </select>
+        <br><br>
+
+        <label for="difficulty">Difficulty:</label>
+        <select name="difficulty" id="difficulty" required>
+            <option value="Easy" <%= review.difficulty === 'Easy' ? 'selected' : '' %>>Easy</option>
+            <option value="Medium" <%= review.difficulty === 'Medium' ? 'selected' : '' %>>Medium</option>
+            <option value="Hard" <%= review.difficulty === 'Hard' ? 'selected' : '' %>>Hard</option>
+            <option value="Nightmare" <%= review.difficulty === 'Nightmare' ? 'selected' : '' %>>Nightmare</option>
+        </select>
+        <br><br>
+
+        <label for="played">I have played this game: </label>
+        <input type="checkbox" name="played" id="played" <%= review.played ? 'checked' : '' %>>
+        <br><br>
+
+        <label for="completed">I have completed this game: </label>
+        <input type="checkbox" name="completed" id="completed" <%= review.completed ? 'checked' : '' %>>
+        <br><br>
+
+        <label for="comment">Your Review / Comment:</label>
+        <br>
+        <textarea name="comment" id="comment" rows="4" cols="40"><%= review.comment || '' %></textarea>
+        <br><br>
+
+        <button type="submit">Update Review</button>
+        <a href="/games/my-games">Cancel</a>
+    </form>
+</body>
+</html>

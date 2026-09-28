@@ -7,8 +7,8 @@ const session = require('express-session');
 const methodOverride = require('method-override')
 const {MongoStore} = require("connect-mongo");
 const connectToDB = require('./db.js')
-const gamesRoutes = require("./routes/games.routes.js")
-const reviewsRoutes = require("./routes/reviews.routes.js")
+const gamesRoutes = require('./routes/games.routes.js')
+const reviewsRoutes = require('./routes/reviews.routes.js')
 
 
 // middleware imports
@@ -52,12 +52,12 @@ app.use(passUserToView)
 
 
 
-
 // Routes go here
+
+app.use('/games/:gameId/reviews' , reviewsRoutes)
 app.use('/auth',authController)
 app.use('/',indexController)
-app.use("/games" , gamesRoutes)
-app.use("/games/:gameId/reviews" , reviewsRoutes)
+app.use('/games' , gamesRoutes)
 
 
 // connect to database and listen on Port 3000
