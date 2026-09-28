@@ -22,4 +22,82 @@ router.get("/:gameId" , async (req , res) => {
     res.render("game-details.ejs" , { game: foundGame })
 })
 
+router.post("/:gameId/reviews" , isSignedIn , async (req , res) => {
+    const foundGame = await Game.findById(req.params.gameId)
+    if (!foundGame) return res.redirect("/games")
+
+    let isPlayed = false
+    if (req.body.played === "on") isPlayed = true
+
+    let isCompleted = false
+    if (req.body.completed === "on") isCompleted = true
+
+    let existingReview = await Review.findOne({
+        game: foundGame._id , 
+        user: req.session.user._id
+    })
+
+    if (existingReview) {
+        existingReview.played = isPlayed
+        existingReview.completed = isCompleted
+        existingReview.rating = Number(req.body.rating)
+        existingReview.difficulty = req.body.difficulty
+        existingReview.comment = req.body.comment
+        await existingReview.save()
+    } else {
+        const newReview = await Review.create({
+            game: foundGame._id , 
+            user: req.session.user._id , 
+            username: req.session.user.username , 
+            played: isPlayed , 
+            completed: isCompleted , 
+            rating: Number(req.body.rating) , 
+            difficulty: req.body.difficulty , 
+            comment: req.body.comment
+        })
+
+        foundGame.reviews.push(newReview._id)
+        await foundGame.save()
+    }
+
+    res.redirect("/games/my-games")
+})
+
+router.get("/:gameId/reviews/:reviewId/edit" , isSignedIn , async (req , res) => {
+    const foundGame = await Game.findById(req.params.gameId)
+    const foundReview = await Review.findById(req.params.reviewId)
+
+    if (!foundReview || !foundReview.user.equals(req.session.user._id)) {
+        return res.send("You are not authorized to edit this review.")
+    }
+
+    res.render("edit-review.ejs" , {
+        game: foundGame , 
+        review: foundReview
+    })
+})
+
+router.put("/:gameId/reviews/:reviewId" , isSignedIn , async (req , res) => {
+    const foundReview = await Review.findById(req.params.reviewId)
+
+    if (!foundReview || !foundReview.user.equals(req.session.user._id)) {
+        return res.send("You are not authorized to update this review.")
+    }
+
+    let isPlayed = false
+    if (req.body.played === "on") isPlayed = true
+
+    let isCompleted = false
+    if (req.body.completed === "on") isCompleted = true
+
+    foundReview.played = isPlayed
+    foundReview.completed = isCompleted
+    foundReview.rating = Number(req.body.rating)
+    foundReview.difficulty = req.body.difficulty
+    foundReview.comment = req.body.comment
+    await foundReview.save()
+
+    res.redirect("/games/my-games")
+})
+
 module.exports = router
