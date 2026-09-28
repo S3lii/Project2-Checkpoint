@@ -33,7 +33,6 @@
                             <p><strong>My Review:</strong> "<%= review.comment %>"</p>
                         <% } %>
 
-                        <!-- Links are INSIDE the loop so review is defined: -->
                         <a href="/games/<%= review.game._id %>">View Game Page</a>
                         |
                         <a href="/games/<%= review.game._id %>/reviews/<%= review._id %>/edit">Edit Review</a>

@@ -100,4 +100,19 @@ router.put("/:gameId/reviews/:reviewId" , isSignedIn , async (req , res) => {
     res.redirect("/games/my-games")
 })
 
+router.delete("/:gameId/reviews/:reviewId" , isSignedIn , async (req , res) => {
+    const foundReview = await Review.findById(req.params.reviewId)
+
+    if (!foundReview || !foundReview.user.equals(req.session.user._id)) {
+        return res.send("You are not authorized to delete this review.")
+    }
+
+    await Game.findByIdAndUpdate(req.params.gameId , {
+        $pull: { reviews: req.params.reviewId }
+    })
+
+    await Review.findByIdAndDelete(req.params.reviewId)
+
+    res.redirect("/games/my-games")
+})
 module.exports = router
