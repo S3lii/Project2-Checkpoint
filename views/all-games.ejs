@@ -17,6 +17,10 @@
         <a href="/games"><button type="button">All Games</button></a>
     </form>
 
+    <% if (games && games.length === 0) { %>
+        <p style="text-align: center; margin-top: 2rem;">No games found. Try searching for another title!</p>
+    <% } %>
+
     <ul>
         <% games.forEach(game => { %>
             <li>

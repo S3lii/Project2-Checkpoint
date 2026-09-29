@@ -63,6 +63,36 @@
         <p><a href="/auth/sign-in">Sign in</a> to rate or review this game.</p>
     <% } %>
 
+    <hr>
+
+    <h2>Player Reviews (<%= game.reviews ? game.reviews.length : 0 %>)</h2>
+
+    <% if (game.reviews && game.reviews.length > 0) { %>
+        <ul>
+            <% game.reviews.forEach(review => { %>
+                <li>
+                    <p><strong><%= review.username %></strong> rated this: <%= review.rating %> / 5 ⭐</p>
+                    <p><strong>Difficulty:</strong> <%= review.difficulty %></p>
+                    <p><strong>Played:</strong> <%= review.played ? 'Yes' : 'No' %> | <strong>Completed:</strong> <%= review.completed ? 'Yes' : 'No' %></p>
+                    
+                    <% if (review.comment) { %>
+                        <p><em>"<%= review.comment %>"</em></p>
+                    <% } %>
+
+                    <% if (user && review.user.equals(user._id)) { %>
+                        <a href="/games/<%= game._id %>/reviews/<%= review._id %>/edit">Edit</a>
+                        |
+                        <form action="/games/<%= game._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST" style="display:inline;">
+                            <button type="submit" onclick="return confirm('Delete review?');">Delete</button>
+                        </form>
+                    <% } %>
+                </li>
+            <% }) %>
+        </ul>
+    <% } else { %>
+        <p>No player reviews yet. Be the first to review this game!</p>
+    <% } %>
+
     <br>
     <a href="/games">Back to All Games</a>
 </body>
