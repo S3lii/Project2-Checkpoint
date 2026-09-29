@@ -4,20 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= game.title %> - Details</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css?v=<%= Date.now() %>">
 </head>
 <body>
     <%- include('partials/navbar') %>
 
     <h1>Game Details</h1>
-    <h2><%= game.title %></h2>
 
-    <% if (game.coverImage) { %>
-        <img src="<%= game.coverImage %>" alt="<%= game.title %>" width="300">
-        <br><br>
-    <% } %>
+    <div class="game-header">
+        <% if (game.coverImage) { %>
+            <img src="<%= game.coverImage %>" alt="<%= game.title %>">
+        <% } %>
 
-    <p><strong>Description:</strong> <%= game.description || 'No description provided.' %></p>
+        <div>
+            <h2><%= game.title %></h2>
+            <p><strong>Description:</strong> <%= game.description || 'No description provided.' %></p>
+        </div>
+    </div>
 
     <hr>
 
@@ -33,7 +36,6 @@
                 <option value="2">⭐⭐ (2 - Subpar)</option>
                 <option value="1">⭐ (1 - Terrible)</option>
             </select>
-            <br><br>
 
             <label for="difficulty">Difficulty:</label>
             <select name="difficulty" id="difficulty" required>
@@ -42,25 +44,24 @@
                 <option value="Hard">Hard</option>
                 <option value="Nightmare">Nightmare</option>
             </select>
-            <br><br>
 
-            <label for="played">I have played this game: </label>
-            <input type="checkbox" name="played" id="played" checked>
-            <br><br>
+            <label>
+                <input type="checkbox" name="played" id="played" checked>
+                I have played this game
+            </label>
 
-            <label for="completed">I have completed this game: </label>
-            <input type="checkbox" name="completed" id="completed">
-            <br><br>
+            <label>
+                <input type="checkbox" name="completed" id="completed">
+                I have completed this game
+            </label>
 
             <label for="comment">Your Review / Comment:</label>
-            <br>
-            <textarea name="comment" id="comment" rows="4" cols="40" placeholder="Write your thoughts..."></textarea>
-            <br><br>
+            <textarea name="comment" id="comment" rows="4" placeholder="Write your thoughts..."></textarea>
 
             <button type="submit">Submit Review</button>
         </form>
     <% } else { %>
-        <p><a href="/auth/sign-in">Sign in</a> to rate or review this game.</p>
+        <p style="text-align: center;"><a href="/auth/sign-in">Sign in</a> to rate or review this game.</p>
     <% } %>
 
     <hr>
@@ -68,7 +69,7 @@
     <h2>Player Reviews (<%= game.reviews ? game.reviews.length : 0 %>)</h2>
 
     <% if (game.reviews && game.reviews.length > 0) { %>
-        <ul>
+        <ul class="reviews-list">
             <% game.reviews.forEach(review => { %>
                 <li>
                     <p><strong><%= review.username %></strong> rated this: <%= review.rating %> / 5 ⭐</p>
@@ -76,24 +77,25 @@
                     <p><strong>Played:</strong> <%= review.played ? 'Yes' : 'No' %> | <strong>Completed:</strong> <%= review.completed ? 'Yes' : 'No' %></p>
                     
                     <% if (review.comment) { %>
-                        <p><em>"<%= review.comment %>"</em></p>
+                        <p class="review-comment">"<%= review.comment %>"</p>
                     <% } %>
 
                     <% if (user && review.user.equals(user._id)) { %>
-                        <a href="/games/<%= game._id %>/reviews/<%= review._id %>/edit">Edit</a>
-                        |
-                        <form action="/games/<%= game._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST" style="display:inline;">
-                            <button type="submit" onclick="return confirm('Delete review?');">Delete</button>
-                        </form>
+                        <div class="actions">
+                            <a href="/games/<%= game._id %>/reviews/<%= review._id %>/edit"><button type="button" class="btn-edit">Edit</button></a>
+                            <form action="/games/<%= game._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                                <button type="submit" class="btn-delete" onclick="return confirm('Delete review?');">Delete</button>
+                            </form>
+                        </div>
                     <% } %>
                 </li>
             <% }) %>
         </ul>
     <% } else { %>
-        <p>No player reviews yet. Be the first to review this game!</p>
+        <p style="text-align: center;">No player reviews yet. Be the first to review this game!</p>
     <% } %>
 
     <br>
-    <a href="/games">Back to All Games</a>
+    <p style="text-align: center;"><a href="/games">Back to All Games</a></p>
 </body>
 </html>

@@ -13,8 +13,7 @@
     <h2><%= game.title %></h2>
 
     <% if (game.coverImage) { %>
-        <img src="<%= game.coverImage %>" alt="<%= game.title %>" width="200">
-        <br><br>
+        <img src="<%= game.coverImage %>" alt="<%= game.title %>" class="edit-img">
     <% } %>
 
     <form action="/games/<%= game._id %>/reviews/<%= review._id %>?_method=PUT" method="POST">
@@ -26,7 +25,6 @@
             <option value="2" <%= review.rating === 2 ? 'selected' : '' %>>⭐⭐ (2 - Subpar)</option>
             <option value="1" <%= review.rating === 1 ? 'selected' : '' %>>⭐ (1 - Terrible)</option>
         </select>
-        <br><br>
 
         <label for="difficulty">Difficulty:</label>
         <select name="difficulty" id="difficulty" required>
@@ -35,23 +33,22 @@
             <option value="Hard" <%= review.difficulty === 'Hard' ? 'selected' : '' %>>Hard</option>
             <option value="Nightmare" <%= review.difficulty === 'Nightmare' ? 'selected' : '' %>>Nightmare</option>
         </select>
-        <br><br>
 
-        <label for="played">I have played this game: </label>
-        <input type="checkbox" name="played" id="played" <%= review.played ? 'checked' : '' %>>
-        <br><br>
+        <label>
+            <input type="checkbox" name="played" id="played" <%= review.played ? 'checked' : '' %>>
+            I have played this game
+        </label>
 
-        <label for="completed">I have completed this game: </label>
-        <input type="checkbox" name="completed" id="completed" <%= review.completed ? 'checked' : '' %>>
-        <br><br>
+        <label>
+            <input type="checkbox" name="completed" id="completed" <%= review.completed ? 'checked' : '' %>>
+            I have completed this game
+        </label>
 
         <label for="comment">Your Review / Comment:</label>
-        <br>
-        <textarea name="comment" id="comment" rows="4" cols="40"><%= review.comment || '' %></textarea>
-        <br><br>
+        <textarea name="comment" id="comment" rows="4"><%= review.comment || '' %></textarea>
 
         <button type="submit">Update Review</button>
-        <a href="/games/my-games">Cancel</a>
+        <p style="text-align: center; margin-top: 1rem;"><a href="/games/my-games">Cancel</a></p>
     </form>
 </body>
 </html>

@@ -11,8 +11,8 @@
 
     <h1>All Games</h1>
 
-    <form action="/games" method="GET">
-        <input type="text" name="search" placeholder="Search for a game...">
+    <form action="/games" method="GET" class="search-bar">
+        <input type="text" name="search" placeholder="Search for a game..." value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>">
         <button type="submit">Search</button>
         <a href="/games"><button type="button">All Games</button></a>
     </form>

@@ -10,7 +10,7 @@
     <%- include('partials/navbar') %>
 
     <h1>My Gaming Journal</h1>
-    <p>Here are the games you have rated and reviewed in your collection:</p>
+    <p style="text-align: center; margin-bottom: 2rem;">Here are the games you have rated and reviewed in your collection:</p>
 
     <% if (userReviews && userReviews.length > 0) { %>
         <ul>
@@ -20,8 +20,7 @@
                         <h3><%= review.game.title %></h3>
                         
                         <% if (review.game.coverImage) { %>
-                            <img src="<%= review.game.coverImage %>" alt="<%= review.game.title %>" width="160">
-                            <br><br>
+                            <img src="<%= review.game.coverImage %>" alt="<%= review.game.title %>">
                         <% } %>
 
                         <p><strong>Rating:</strong> <%= review.rating %> / 5 ⭐</p>
@@ -30,24 +29,23 @@
                         <p><strong>Completed:</strong> <%= review.completed ? 'Yes' : 'No' %></p>
 
                         <% if (review.comment) { %>
-                            <p><strong>My Review:</strong> "<%= review.comment %>"</p>
+                            <p class="review-comment">"<%= review.comment %>"</p>
                         <% } %>
 
-                        <a href="/games/<%= review.game._id %>">View Game Page</a>
-                        |
-                        <a href="/games/<%= review.game._id %>/reviews/<%= review._id %>/edit">Edit Review</a>
-                        |
-                        <form action="/games/<%= review.game._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST" style="display:inline;">
-                            <button type="submit" onclick="return confirm('Delete this review?');">Delete Review</button>
-                        </form>
+                        <div class="actions">
+                            <a href="/games/<%= review.game._id %>"><button type="button" class="btn-view">View Game</button></a>
+                            <a href="/games/<%= review.game._id %>/reviews/<%= review._id %>/edit"><button type="button" class="btn-edit">Edit</button></a>
+                            <form action="/games/<%= review.game._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                                <button type="submit" class="btn-delete" onclick="return confirm('Delete this review?');">Delete</button>
+                            </form>
+                        </div>
                     </li>
-                    <hr>
                 <% } %>
             <% }) %>
         </ul>
     <% } else { %>
-        <p>No games logged in your journal yet!</p>
-        <p><a href="/games">Browse All Games</a> to select and review your first game.</p>
+        <p style="text-align: center;">No games logged in your journal yet!</p>
+        <p style="text-align: center;"><a href="/games">Browse All Games</a> to select and review your first game.</p>
     <% } %>
 </body>
 </html>

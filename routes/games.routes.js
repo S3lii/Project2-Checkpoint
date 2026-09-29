@@ -16,7 +16,7 @@ router.get("/" , async (req , res) => {
         games = await rawgService.getPopularGames()
     }
 
-    res.render("all-games.ejs" , { games: games })
+    res.render("all-games.ejs" , { games: games , searchQuery: searchQuery || "" })
 })
 
 router.get("/my-games" , isSignedIn , async (req , res) => {

@@ -12,6 +12,13 @@
     <h1>Welcome To Checkpoint</h1>
     <p>Your First Destination For Games 🎮</p>
 
-    <a href="/games"><button>Browse All Games</button></a>
+    <div class="home-buttons">
+        <a href="/games"><button>Browse All Games</button></a>
+        <% if (user) { %>
+            <a href="/games/my-games"><button>My Games</button></a>
+        <% } else { %>
+            <a href="/auth/sign-up"><button>Create Account</button></a>
+        <% } %>
+    </div>
 </body>
 </html>
