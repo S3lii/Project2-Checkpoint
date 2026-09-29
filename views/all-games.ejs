@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Games</title>
+    <title>All Games - Checkpoint</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -14,12 +14,13 @@
     <ul>
         <% games.forEach(game => { %>
             <li>
-            <a href="/games/<%= game._id %>"><%= game.title %></a>
-            <% if (game.coverImage) { %><br>
-            <img src="<%= game.coverImage %>" alt="<%= game.title %>" width="200">
+             <a href="/games/<%= game.rawgId || game._id %>">
+            <% if (game.coverImage) { %>
+             <img src="<%= game.coverImage %>" alt="<%= game.title %>">
             <% } %>
+             <h3><%= game.title %></h3>
+            </a>
             </li>
-            <br>
         <% }) %>
     </ul>
 </body>

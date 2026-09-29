@@ -1,24 +1,55 @@
 const express = require("express")
 const router = express.Router()
+const mongoose = require("mongoose")
 const Game = require("../models/Game.js")
 const Review = require("../models/Review.js")
 const isSignedIn = require("../middleware/is-signed-in.js")
+const rawgService = require("../features/rawg.api.js")
 
 router.get("/" , async (req , res) => {
-    const games = await Game.find()
+    const games = await rawgService.getPopularGames(100)
     res.render("all-games.ejs" , { games: games })
 })
 
 router.get("/my-games" , isSignedIn , async (req , res) => {
     const userReviews = await Review.find({ user: req.session.user._id })
-        .populate("game")
-        .sort({ createdAt: -1 })
-
-    res.render("my-games.ejs" , { userReviews: userReviews })
+    .populate("game")
+    .sort({ createdAt: -1 })
+ res.render("my-games.ejs" , { userReviews: userReviews })
 })
 
 router.get("/:gameId" , async (req , res) => {
-    const foundGame = await Game.findById(req.params.gameId)
+    let foundGame = null
+    if (mongoose.Types.ObjectId.isValid(req.params.gameId)) {
+        foundGame = await Game.findById(req.params.gameId)
+    }
+
+    if (!foundGame && !isNaN(req.params.gameId)) {
+        foundGame = await Game.findOne({ rawgId: Number(req.params.gameId) })
+    }
+
+    if (!foundGame && !isNaN(req.params.gameId)) {
+        try {
+            const response = await fetch(`https://api.rawg.io/api/games/${req.params.gameId}?key=3b494402afe04a2ca44b845d3af51be9`)
+            if (response.ok) {
+            const data = await response.json()
+            foundGame = await Game.create({
+            rawgId: data.id , 
+            title: data.name , 
+            coverImage: data.background_image || "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80" , 
+            description: data.description_raw || "" , 
+            reviews: []
+                })
+            }
+        } catch (error) {
+        return res.redirect("/games")
+        }
+    }
+
+    if (!foundGame) {
+        return res.redirect("/games")
+    }
+
     res.render("game-details.ejs" , { game: foundGame })
 })
 
@@ -115,4 +146,5 @@ router.delete("/:gameId/reviews/:reviewId" , isSignedIn , async (req , res) => {
 
     res.redirect("/games/my-games")
 })
+
 module.exports = router
