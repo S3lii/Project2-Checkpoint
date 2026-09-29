@@ -11,15 +11,21 @@
 
     <h1>All Games</h1>
 
+    <form action="/games" method="GET">
+        <input type="text" name="search" placeholder="Search for a game...">
+        <button type="submit">Search</button>
+        <a href="/games"><button type="button">All Games</button></a>
+    </form>
+
     <ul>
         <% games.forEach(game => { %>
             <li>
-             <a href="/games/<%= game.rawgId || game._id %>">
-            <% if (game.coverImage) { %>
-             <img src="<%= game.coverImage %>" alt="<%= game.title %>">
-            <% } %>
-             <h3><%= game.title %></h3>
-            </a>
+                <a href="/games/<%= game.rawgId || game._id %>">
+                    <% if (game.coverImage) { %>
+                        <img src="<%= game.coverImage %>" alt="<%= game.title %>">
+                    <% } %>
+                    <h3><%= game.title %></h3>
+                </a>
             </li>
         <% }) %>
     </ul>

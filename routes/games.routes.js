@@ -6,10 +6,6 @@ const Review = require("../models/Review.js")
 const isSignedIn = require("../middleware/is-signed-in.js")
 const rawgService = require("../features/rawg.api.js")
 
-router.get("/" , async (req , res) => {
-    const games = await rawgService.getPopularGames(100)
-    res.render("all-games.ejs" , { games: games })
-})
 
 router.get("/my-games" , isSignedIn , async (req , res) => {
     const userReviews = await Review.find({ user: req.session.user._id })
@@ -146,5 +142,21 @@ router.delete("/:gameId/reviews/:reviewId" , isSignedIn , async (req , res) => {
 
     res.redirect("/games/my-games")
 })
+
+
+router.get("/" , async (req , res) => {
+    const searchQuery = req.query.search
+    let games = []
+
+    if (searchQuery) {
+        games = await rawgService.searchGames(searchQuery)
+    } else {
+        games = await rawgService.getPopularGames()
+    }
+
+    res.render("all-games.ejs" , { games: games })
+})
+
+
 
 module.exports = router

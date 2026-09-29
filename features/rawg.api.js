@@ -28,7 +28,8 @@ async function getPopularGames() {
 
 async function searchGames(searchQuery) {
     try {
-        const response = await fetch(`https://api.rawg.io/api/games?key=${RAWG_API_KEY}&search=${searchQuery}&page_size=40`)
+        
+        const response = await fetch(`https://api.rawg.io/api/games?key=${RAWG_API_KEY}&search=${encodeURIComponent(searchQuery)}&page_size=40`)
         const data = await response.json()
         let gamesList = []
 
