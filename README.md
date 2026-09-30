@@ -125,47 +125,7 @@ Before running the project, make sure you have:
 
 ## Database Design
 
-```mermaid
-erDiagram
-    User ||--o{ Review : "writes"
-    Game ||--o{ Review : "receives"
-
-    User {
-        ObjectId _id PK
-        string username UK
-        string password
-        date createdAt
-        date updatedAt
-    }
-
-    Game {
-        ObjectId _id PK
-        int rawgId UK
-        string title
-        string genre
-        string platform
-        int releaseYear
-        string coverImage
-        string description
-        ObjectId[] reviews FK
-        date createdAt
-        date updatedAt
-    }
-
-    Review {
-        ObjectId _id PK
-        ObjectId game FK
-        ObjectId user FK
-        string username
-        int rating
-        string difficulty
-        boolean played
-        boolean completed
-        string comment
-        date createdAt
-        date updatedAt
-    }
-```
+![Project Draw](image-6.png)
 
 ---
 
