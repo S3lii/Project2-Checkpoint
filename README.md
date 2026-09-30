@@ -175,7 +175,6 @@ Before running the project, make sure you have:
   - **Delete**: Remove your review with a confirmation prompt.
 - **Personal Gaming Journal**: Dedicated "My Games" page displaying all user-reviewed games with quick action buttons.
 - **Search System**: Real-time game search with clean fallback for empty results.
-- **Responsive Dark Gaming Theme**: Custom CSS featuring glassmorphic navigation, elevated dark cards, glowing cyan accents, and mobile-friendly responsive grid layouts.
 
 ---
 
